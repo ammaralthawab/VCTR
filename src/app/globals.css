@@ -289,10 +289,20 @@ html[dir="rtl"] .font-en {
 /* Globe inside the WORLDS headline — scales with t-display font size */
 .hero-globe {
   /* clamp mirrors the t-display font-size: clamp(3.5rem, 10vw, 10rem) */
-  width:  clamp(3.2rem, 9.2vw, 9.2rem) !important;
+  width: clamp(3.2rem, 9.2vw, 9.2rem) !important;
   height: clamp(3.2rem, 9.2vw, 9.2rem) !important;
   /* Pull it up slightly to optically align with cap-height */
   margin-top: -0.08em;
+}
+
+/* Arabic version — globe as companion orb beside عوالم, not a letter stand-in */
+.hero-globe-ar {
+  /* ~75% of text size so it reads as a symbol, not a competing letter */
+  width: clamp(2.4rem, 7vw, 7rem) !important;
+  height: clamp(2.4rem, 7vw, 7rem) !important;
+  margin-top: 0.1em;
+  /* Subtle outer glow so it reads as intentional, not accidental */
+  filter: drop-shadow(0 0 18px rgba(195, 244, 255, 0.35));
 }
 
 /* ─── TERMINAL FORM ───────────────────────────────────────────────────── */

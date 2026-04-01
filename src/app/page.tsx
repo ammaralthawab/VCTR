@@ -9,6 +9,7 @@ import Systems from "@/components/Systems";
 import Magnitude from "@/components/Magnitude";
 import Initiate from "@/components/Initiate";
 import AuditModal from "@/components/AuditModal";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 type Lang = "en" | "ar";
 
@@ -35,6 +36,7 @@ export default function Page() {
         <Initiate lang={lang} onAuditOpen={() => setAuditOpen(true)} />
       </main>
       <AuditModal open={auditOpen} onClose={() => setAuditOpen(false)} lang={lang} />
+      <WhatsAppButton />
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 type Lang = "en" | "ar";
 
@@ -12,6 +13,7 @@ interface NavProps {
 
 export default function Nav({ lang, onLangToggle, onAuditOpen }: NavProps) {
     const [scrolled, setScrolled] = useState(false);
+    const isRtl = lang === "ar";
 
     useEffect(() => {
         const handler = () => setScrolled(window.scrollY > 40);
@@ -20,17 +22,43 @@ export default function Nav({ lang, onLangToggle, onAuditOpen }: NavProps) {
     }, []);
 
     return (
-        <nav className={`nav-vctr ${scrolled ? "scrolled" : ""}`}>
-            {/* Mark */}
-            <a href="#hero" className="flex items-center gap-3 group">
-                <div className="relative w-7 h-7">
-                    <svg viewBox="0 0 32 32" fill="none" className="w-full h-full" aria-hidden>
-                        <path d="M4 28L16 4L28 28" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M16 4L28 28" stroke="#0044FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <circle cx="16" cy="4" r="2.5" fill="#0044FF" />
-                    </svg>
-                </div>
-                <span className="font-semibold text-white tracking-[0.25em] text-xs">VCTR</span>
+        <nav className={`nav-vctr ${scrolled ? "scrolled" : ""}`} dir={isRtl ? "rtl" : "ltr"}>
+            {/* Logo */}
+            <a href="#hero" className="flex items-center group" aria-label="VCTR home">
+                {/* Small icon — always visible, hide full logo on very small screens */}
+                <Image
+                    src="/logo-icon.jpeg"
+                    alt="VCTR icon"
+                    width={36}
+                    height={36}
+                    className="rounded-sm sm:hidden"
+                    style={{ objectFit: "contain", width: 36, height: "auto" }}
+                    priority
+                />
+                {/* Full EN logo on medium+ (hidden in AR mode) */}
+                {!isRtl && (
+                    <Image
+                        src="/logo-en.jpeg"
+                        alt="VCTR"
+                        width={120}
+                        height={36}
+                        className="hidden sm:block"
+                        style={{ objectFit: "contain", width: 120, height: "auto" }}
+                        priority
+                    />
+                )}
+                {/* Full AR logo (shown in AR mode) */}
+                {isRtl && (
+                    <Image
+                        src="/logo-ar.jpeg"
+                        alt="فكتر"
+                        width={140}
+                        height={36}
+                        className="hidden sm:block"
+                        style={{ objectFit: "contain", width: 140, height: "auto" }}
+                        priority
+                    />
+                )}
             </a>
 
             {/* Controls */}

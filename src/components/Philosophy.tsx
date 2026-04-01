@@ -201,7 +201,7 @@ export default function Philosophy({ lang, onAuditOpen }: PhilosophyProps) {
                         {lang === "en" ? (
                             <>Become a <span style={{ color: "var(--accent)" }}>VCTR.</span></>
                         ) : (
-                            <>كن <span style={{ color: "var(--accent)" }}>متجهاً.</span></>
+                            <>كن <span style={{ color: "var(--accent)" }}>VCTR.</span></>
                         )}
                     </h2>
                     <p

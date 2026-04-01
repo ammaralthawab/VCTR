@@ -19,8 +19,10 @@ const copy = {
     ar: {
         label: "وكالة تسويق · الرياض، المملكة العربية السعودية",
         pre: "نبني",
-        suffix_l: "ع",
-        suffix_r: "الم",
+        // In RTL flex: suffix_l lands on the RIGHT, globe in the MIDDLE, suffix_r on the LEFT
+        // Reading RTL: عوال (right) + [globe replacing م] (left) = عوالم ✓
+        suffix_l: "عوال",
+        suffix_r: "",
         sub: "نهج يجعل الشركات لا مجرد شركات — بل عوالم يمكن للناس الدخول إليها.",
         cta: "ابدأ مشروعك",
         scroll: "اسحب",
@@ -115,41 +117,71 @@ export default function Hero({ lang, onAuditOpen }: HeroProps) {
                     {c.pre}
                 </h1>
 
-                {/* "W[globe]RLDS" — giant centered display line */}
-                <div
-                    className="reveal-item flex items-center justify-start"
-                    style={{ opacity: 0, marginBottom: "2.5rem" }}
-                >
-                    <span
-                        className="t-display"
-                        style={{
-                            fontFamily: isRtl ? "var(--font-ar)" : undefined,
-                            lineHeight: 1,
-                            letterSpacing: "-0.045em",
-                        }}
+                {/* Headline — EN: W[globe]RLDS  |  AR: عوالم + decorative globe */}
+                {isRtl ? (
+                    /* ── Arabic version ──────────────────────────────────────
+                       Arabic connected script can't cleanly swap a letter.
+                       We show عوالم as one complete word and let the globe
+                       sit as a large ambient sphere on the far right (the
+                       reading-start side in RTL), as if the word emerges from it.
+                    ─────────────────────────────────────────────────────── */
+                    <div
+                        className="reveal-item relative flex items-center"
+                        style={{ opacity: 0, marginBottom: "2.5rem" }}
                     >
-                        {c.suffix_l}
-                    </span>
-                    {/* Globe takes the place of the O */}
-                    <span
-                        className="inline-flex items-center"
-                        style={{ marginTop: "0.05em" }}
+                        {/* Full Arabic word — connected, unbroken */}
+                        <span
+                            className="t-display"
+                            style={{
+                                fontFamily: "var(--font-ar)",
+                                lineHeight: 1,
+                                position: "relative",
+                                zIndex: 2,
+                            }}
+                        >
+                            عوالم
+                        </span>
+
+                        {/* Globe — decorative orb after the word (left side in RTL = end of word) */}
+                        <span
+                            className="inline-flex items-center flex-shrink-0"
+                            style={{
+                                marginRight: "clamp(0.6rem, 1.5vw, 1.2rem)",
+                                marginTop: "0.05em",
+                                opacity: 0.92,
+                            }}
+                        >
+                            <Globe className="hero-globe-ar" />
+                        </span>
+                    </div>
+                ) : (
+                    /* ── English version: W[globe]RLDS ───────────────────── */
+                    <div
+                        className="reveal-item flex items-center justify-start"
+                        style={{ opacity: 0, marginBottom: "2.5rem" }}
                     >
-                        <Globe className="hero-globe" />
-                    </span>
-                    <span
-                        className="t-display"
-                        style={{
-                            fontFamily: isRtl ? "var(--font-ar)" : undefined,
-                            lineHeight: 1,
-                            letterSpacing: "-0.045em",
-                            WebkitTextStroke: "1.5px rgba(255,255,255,0.25)",
-                            color: "transparent",
-                        }}
-                    >
-                        {c.suffix_r}
-                    </span>
-                </div>
+                        <span
+                            className="t-display"
+                            style={{ lineHeight: 1, letterSpacing: "-0.045em" }}
+                        >
+                            W
+                        </span>
+                        <span className="inline-flex items-center" style={{ marginTop: "0.05em" }}>
+                            <Globe className="hero-globe" />
+                        </span>
+                        <span
+                            className="t-display"
+                            style={{
+                                lineHeight: 1,
+                                letterSpacing: "-0.045em",
+                                WebkitTextStroke: "1.5px rgba(255,255,255,0.25)",
+                                color: "transparent",
+                            }}
+                        >
+                            RLDS
+                        </span>
+                    </div>
+                )}
 
                 <p
                     className="t-subhead reveal-item mb-14"
