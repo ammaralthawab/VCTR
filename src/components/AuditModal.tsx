@@ -43,13 +43,39 @@ const copy = {
 
 export default function AuditModal({ open, onClose, lang }: AuditModalProps) {
     const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const c = copy[lang];
     const isRtl = lang === "ar";
+    const fieldNames = ["name", "company", "role", "needs"];
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => { setSubmitted(false); onClose(); }, 4000);
+        setIsSubmitting(true);
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+        // FormSubmit requires these hidden fields or uses defaults, but the API accepts standard JSON
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            await fetch("https://formsubmit.co/ajax/i.am.mohd.sadeq@gmail.com", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    ...data,
+                    _subject: "New Project Brief from VCTR Website",
+                }),
+            });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsSubmitting(false);
+            setSubmitted(true);
+            setTimeout(() => { setSubmitted(false); onClose(); }, 4000);
+        }
     };
 
     return (
@@ -115,6 +141,7 @@ export default function AuditModal({ open, onClose, lang }: AuditModalProps) {
                                                     </label>
                                                     <input
                                                         type="text"
+                                                        name={fieldNames[i]}
                                                         className="terminal-input"
                                                         placeholder={c.placeholders[i]}
                                                         required={i < 2}
@@ -126,10 +153,11 @@ export default function AuditModal({ open, onClose, lang }: AuditModalProps) {
 
                                         <button
                                             type="submit"
+                                            disabled={isSubmitting}
                                             className="btn-accent w-full justify-center mt-8"
-                                            style={{ height: 48 }}
+                                            style={{ height: 48, opacity: isSubmitting ? 0.7 : 1 }}
                                         >
-                                            {c.submit}
+                                            {isSubmitting ? "..." : c.submit}
                                         </button>
                                     </form>
 

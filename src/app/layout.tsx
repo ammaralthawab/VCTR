@@ -10,6 +10,16 @@ export const metadata: Metadata = {
     description: "We replace guesswork with direction.",
     type: "website",
   },
+  icons: {
+    icon: "/logo-icon.jpeg",
+    apple: "/logo-icon.jpeg",
+  },
+  verification: {
+    google: "YOUR_GOOGLE_VERIFICATION_CODE",
+    other: {
+      "msvalidate.01": "YOUR_BING_VERIFICATION_CODE",
+    },
+  },
 };
 
 export default function RootLayout({
